@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    container_name: my_app
+    depends_on:
+      - mongo
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URI: "mongodb://mongo:27017"
+    restart: always
+
+volumes:
+  mongo-data:
