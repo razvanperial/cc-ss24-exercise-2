@@ -11,9 +11,7 @@ services:
       - mongo-data:/data/db
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: razvanperial/myapp:latest
     platform: linux/amd64
     container_name: my_app
     depends_on:
