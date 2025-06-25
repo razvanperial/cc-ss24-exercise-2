@@ -2,45 +2,35 @@ version: "3.9"
 
 services:
   get-service:
-    build:
-      context: .
-      dockerfile: Dockerfile.get
+    image: razvanperial/get-service:latest
     environment:
       - DATABASE_URI=mongodb://mongo:27017
     depends_on:
       - mongo
 
   post-service:
-    build:
-      context: .
-      dockerfile: Dockerfile.post
+    image: razvanperial/post-service:latest
     environment:
       - DATABASE_URI=mongodb://mongo:27017
     depends_on:
       - mongo
 
   put-service:
-    build:
-      context: .
-      dockerfile: Dockerfile.put
+    image: razvanperial/put-service:latest
     environment:
       - DATABASE_URI=mongodb://mongo:27017
     depends_on:
       - mongo
 
   delete-service:
-    build:
-      context: .
-      dockerfile: Dockerfile.delete
+    image: razvanperial/delete-service:latest
     environment:
       - DATABASE_URI=mongodb://mongo:27017
     depends_on:
       - mongo
 
   frontend-service:
-    build:
-      context: .
-      dockerfile: Dockerfile.frontend
+    image: razvanperial/frontend-service:latest
     environment:
       - DATABASE_URI=mongodb://mongo:27017
     depends_on:
