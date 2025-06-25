@@ -93,10 +93,12 @@
 {{ block "authors" . }}
 <table>
   <tr>
+    <th>Book Name</th>
     <th>Author Name</th>
   </tr>
   {{ range . }}
   <tr>
+    <td>{{ .BookName }}</td>
     <td>{{ .BookAuthor }}</td>
   </tr>
   {{ end }}
@@ -106,10 +108,12 @@
 {{ block "years" . }}
 <table>
   <tr>
+    <th>Book Name</th>
     <th>Year</th>
   </tr>
   {{ range . }}
   <tr>
+    <td>{{ .BookName }}</td>
     <td>{{ .BookYear }}</td>
   </tr>
   {{ end }}

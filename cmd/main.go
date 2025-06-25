@@ -189,6 +189,7 @@ func findAllAuthors(coll *mongo.Collection) []map[string]interface{} {
 	var ret []map[string]interface{}
 	for _, res := range results {
 		ret = append(ret, map[string]interface{}{
+			"BookName":   res.BookName,
 			"BookAuthor": res.BookAuthor,
 		})
 	}
@@ -206,6 +207,7 @@ func findAllYears(coll *mongo.Collection) []map[string]interface{} {
 	var ret []map[string]interface{}
 	for _, res := range results {
 		ret = append(ret, map[string]interface{}{
+			"BookName": res.BookName,
 			"BookYear": res.BookYear,
 		})
 	}
@@ -379,7 +381,7 @@ func main() {
 		// Insert the book into the database
 		result, err := coll.InsertOne(context.TODO(), book)
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to insert book"})
+			return c.JSON(http.StatusOK, map[string]string{"error": "Failed to insert book"})
 		}
 
 		// Return success response with the inserted ID

@@ -1,26 +1,65 @@
-version: '3.8'
+version: "3.9"
 
 services:
-  mongo:
-    image: mongo:latest
-    container_name: mongo
-    restart: always
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
-
-  app:
-    image: razvanperial/myapp:latest
-    platform: linux/amd64
-    container_name: my_app
+  get-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.get
+    environment:
+      - DATABASE_URI=mongodb://mongo:27017
     depends_on:
       - mongo
-    ports:
-      - "8080:8080"
-    environment:
-      DATABASE_URI: "mongodb://mongo:27017"
-    restart: always
 
-volumes:
-  mongo-data:
+  post-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.post
+    environment:
+      - DATABASE_URI=mongodb://mongo:27017
+    depends_on:
+      - mongo
+
+  put-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.put
+    environment:
+      - DATABASE_URI=mongodb://mongo:27017
+    depends_on:
+      - mongo
+
+  delete-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.delete
+    environment:
+      - DATABASE_URI=mongodb://mongo:27017
+    depends_on:
+      - mongo
+
+  frontend-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    environment:
+      - DATABASE_URI=mongodb://mongo:27017
+    depends_on:
+      - mongo
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - get-service
+      - post-service
+      - put-service
+      - delete-service
+      - frontend-service
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27018:27017"

@@ -1,0 +1,20 @@
+# Stage 1: Build the binary
+FROM golang:1.22 AS builder
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o delete-service ./cmd/delete-service
+
+# Stage 2: Create lightweight final image
+FROM --platform=linux/amd64 alpine:latest
+
+WORKDIR /root/
+
+COPY --from=builder /app/delete-service .
+
+CMD ["./delete-service"]

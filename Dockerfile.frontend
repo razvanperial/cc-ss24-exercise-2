@@ -1,0 +1,24 @@
+# Stage 1: Build the binary
+FROM golang:1.22 AS builder
+
+WORKDIR /app
+
+COPY views/ ./views/
+COPY css/ ./css   
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o frontend-service ./cmd/frontend-service
+
+# Stage 2: Create lightweight final image
+FROM --platform=linux/amd64 alpine:latest
+
+WORKDIR /root/
+
+COPY --from=builder /app/frontend-service .
+COPY --from=builder /app/views ./views
+COPY --from=builder /app/css ./css
+
+CMD ["./frontend-service"]
