@@ -43,7 +43,7 @@ func main() {
 		}
 
 		if count > 0 {
-			return c.JSON(http.StatusConflict, map[string]string{"error": "Book already exists"})
+			return c.JSON(http.StatusOK, map[string]string{"message": "Missing mandatory fields"})
 		}
 
 		result, err := coll.InsertOne(context.TODO(), book)

@@ -36,7 +36,8 @@ func main() {
 			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to delete book"})
 		}
 		if result.DeletedCount == 0 {
-			return c.JSON(http.StatusNotFound, map[string]string{"error": "Book not found"})
+			return c.JSON(http.StatusOK, map[string]string{"message": "Book not found"})
+
 		}
 
 		return c.JSON(http.StatusOK, map[string]string{"message": "Book deleted successfully"})
